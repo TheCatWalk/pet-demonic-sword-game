@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://cl0bp48oawp3c"]
+
+[ext_resource type="Texture2D" uid="uid://do8o2ujm325ht" path="res://assets/fishbowl/fishbowl-back.png" id="1_yppm6"]
+[ext_resource type="PackedScene" uid="uid://csvs8daxl78ib" path="res://scenes/sword.tscn" id="2_sm2eq"]
+[ext_resource type="Texture2D" uid="uid://b4bw4shxm0xc2" path="res://assets/fishbowl/fishbowl-front.png" id="2_yq0v6"]
+[ext_resource type="Texture2D" uid="uid://5hqnmn7m1h26" path="res://assets/fishbowl/water-button-mask.png" id="4_sm2eq"]
+[ext_resource type="Script" uid="uid://cxkl2f0fgj1ia" path="res://scripts/water_button.gd" id="5_ll3wk"]
+
+[node name="swordbowl" type="Node2D" unique_id=1241587242]
+
+[node name="swordbowl-back" type="Sprite2D" parent="." unique_id=908641235]
+texture = ExtResource("1_yppm6")
+
+[node name="sword" parent="." unique_id=1045126170 instance=ExtResource("2_sm2eq")]
+
+[node name="swordbowl-front" type="Sprite2D" parent="." unique_id=2009693963]
+texture = ExtResource("2_yq0v6")
+
+[node name="water-button" type="TextureButton" parent="." unique_id=244522826]
+self_modulate = Color(1, 1, 1, 0)
+offset_left = -537.0
+offset_top = -552.0
+offset_right = 502.0
+offset_bottom = 508.0
+texture_normal = ExtResource("4_sm2eq")
+script = ExtResource("5_ll3wk")
