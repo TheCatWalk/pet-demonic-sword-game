@@ -1,11 +1,14 @@
 [gd_scene format=3 uid="uid://csvs8daxl78ib"]
 
 [ext_resource type="Script" uid="uid://bx1j41mbkmg03" path="res://scripts/sword.gd" id="1_n355p"]
+[ext_resource type="Texture2D" uid="uid://cg4ldudcq64pb" path="res://assets/swords/sword_01_centred_cropped.png" id="2_p4x8v"]
 [ext_resource type="Texture2D" uid="uid://b0v7lx1uwgwaq" path="res://assets/swords/sword_03_centred_cropped.png" id="2_s4ec8"]
-[ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/sword_03_sprite.gd" id="3_s4ec8"]
+[ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/sword_sprite.gd" id="3_s4ec8"]
 [ext_resource type="Script" uid="uid://cy0fauicqjaru" path="res://scripts/sword_area.gd" id="4_k5whp"]
 [ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="5_1yp6w"]
+[ext_resource type="Texture2D" uid="uid://dy36mifyc88l3" path="res://assets/swords/sword_04_centred_cropped.png" id="5_3oqan"]
 [ext_resource type="Script" uid="uid://e5n6g7h266gx" path="res://scripts/sound_chomp.gd" id="6_fnw8x"]
+[ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="6_sjcpw"]
 [ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="7_cp3m4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s4ec8"]
@@ -14,14 +17,16 @@ radius = 15.0
 [node name="sword" type="CharacterBody2D" unique_id=1045126170]
 script = ExtResource("1_n355p")
 
-[node name="sword_03" type="Sprite2D" parent="." unique_id=1885588746]
+[node name="sword_sprite" type="Sprite2D" parent="." unique_id=1885588746]
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_s4ec8")
+texture = ExtResource("2_p4x8v")
 script = ExtResource("3_s4ec8")
+images = Array[CompressedTexture2D]([ExtResource("2_p4x8v"), ExtResource("2_s4ec8"), ExtResource("5_3oqan"), ExtResource("6_sjcpw")])
 
-[node name="sword_area" type="Area2D" parent="." unique_id=1040540972 node_paths=PackedStringArray("sound_chomp")]
+[node name="sword_area" type="Area2D" parent="." unique_id=1040540972 node_paths=PackedStringArray("sound_chomp", "sword_sprite")]
 script = ExtResource("4_k5whp")
 sound_chomp = NodePath("../sound_chomp")
+sword_sprite = NodePath("../sword_sprite")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="sword_area" unique_id=1734053575]
 shape = SubResource("CircleShape2D_s4ec8")
