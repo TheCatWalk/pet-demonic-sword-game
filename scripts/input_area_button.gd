@@ -1,8 +1,8 @@
 extends TextureButton
 
-signal water_entered
-signal water_exited
-signal water_pressed(pos)
+signal zone_entered
+signal zone_exited
+signal zone_pressed(pos)
 
 func _ready() -> void:
 	mouse_entered.connect(on_mouse_entered)
@@ -15,10 +15,10 @@ func _ready() -> void:
 		texture_click_mask = bitmap
 
 func on_mouse_entered():
-	water_entered.emit()
+	zone_entered.emit()
 
 func on_mouse_exited():
-	water_exited.emit()
+	zone_exited.emit()
 
 func on_pressed():
-	water_pressed.emit(get_global_mouse_position())
+	zone_pressed.emit(get_global_mouse_position())

@@ -1,6 +1,5 @@
 extends Area2D
-@export var sound_chomp: AudioStreamPlayer2D
-@export var sword_sprite: Sprite2D
+@export var sound_interaction: AudioStreamPlayer2D
 
 func _ready() -> void:
 	body_entered.connect(on_body_entered)
@@ -8,5 +7,5 @@ func _ready() -> void:
 func on_body_entered(body):
 	if body.has_method("consume"):
 		body.consume()
-		sound_chomp.play_sound()
-		owner.advance_level()
+		sound_interaction.play_sound()
+		owner.on_interaction_success()

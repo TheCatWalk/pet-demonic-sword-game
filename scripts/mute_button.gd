@@ -19,9 +19,9 @@ func mute():
 
 func on_mouse_entered():
 	if muted:
-		hovered.emit(2)
-	else:
 		hovered.emit(3)
+	else:
+		hovered.emit(2)
 
 func on_mouse_exited():
 	unhovered.emit()

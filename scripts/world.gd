@@ -1,8 +1,9 @@
 extends Node2D
 
+signal drag_requested
+signal resize_requested
 
 func _ready() -> void:
-	get_window().min_size = Vector2i(150,150)
-
-func _physics_process(delta: float) -> void:
-	get_window().size.x = get_window().size.y
+	var env = $Environment
+	env.drag_requested.connect(drag_requested.emit)
+	env.resize_requested.connect(resize_requested.emit)

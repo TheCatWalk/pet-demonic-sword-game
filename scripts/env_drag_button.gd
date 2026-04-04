@@ -2,6 +2,7 @@ extends TextureButton
 @export var sound_glass_slide: AudioStreamPlayer2D
 @export var sound_glass_place: AudioStreamPlayer2D
 
+signal drag_requested
 signal hovered(index)
 signal unhovered
 
@@ -18,7 +19,7 @@ func _ready() -> void:
 		texture_click_mask = bitmap
 
 func on_button_down():
-	get_window().start_drag()
+	drag_requested.emit()
 	sound_glass_slide.play_sound()
 
 func on_button_up():

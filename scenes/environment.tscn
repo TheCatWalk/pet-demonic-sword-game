@@ -1,24 +1,24 @@
-[gd_scene format=3 uid="uid://cl0bp48oawp3c"]
+[gd_scene format=3 uid="uid://c30gtcxp6tgj5"]
 
-[ext_resource type="Script" uid="uid://dtsi1344gg50n" path="res://scripts/bowl_manager.gd" id="1_cvxmx"]
+[ext_resource type="Script" uid="uid://dtsi1344gg50n" path="res://scripts/environment_manager.gd" id="1_cvxmx"]
 [ext_resource type="Texture2D" uid="uid://do8o2ujm325ht" path="res://assets/fishbowl/fishbowl-back.png" id="1_yppm6"]
-[ext_resource type="Script" uid="uid://si67dpiucc1f" path="res://scripts/food_container.gd" id="2_160m0"]
-[ext_resource type="PackedScene" uid="uid://csvs8daxl78ib" path="res://scenes/sword.tscn" id="2_sm2eq"]
+[ext_resource type="Script" uid="uid://si67dpiucc1f" path="res://scripts/item_spawner.gd" id="2_160m0"]
+[ext_resource type="PackedScene" uid="uid://csvs8daxl78ib" path="res://scenes/simulation_actor.tscn" id="2_sm2eq"]
 [ext_resource type="Texture2D" uid="uid://b4bw4shxm0xc2" path="res://assets/fishbowl/fishbowl-front.png" id="2_yq0v6"]
 [ext_resource type="Texture2D" uid="uid://5hqnmn7m1h26" path="res://assets/fishbowl/water-button-mask.png" id="4_sm2eq"]
 [ext_resource type="Texture2D" uid="uid://cqiohtj5vftn0" path="res://assets/decorations-red/halloween pumpkins/pumpkins-outline.png" id="5_hh614"]
-[ext_resource type="Script" uid="uid://cxkl2f0fgj1ia" path="res://scripts/water_button.gd" id="5_ll3wk"]
+[ext_resource type="Script" uid="uid://cxkl2f0fgj1ia" path="res://scripts/input_area_button.gd" id="5_ll3wk"]
 [ext_resource type="Shader" uid="uid://bh10a8xql5crr" path="res://shaders/foliage.tres" id="5_lp3pk"]
 [ext_resource type="Texture2D" uid="uid://dc0pxlfbjqv7n" path="res://assets/decorations-red/Graveyard/Graveyard_Set.png" id="5_wgxn2"]
 [ext_resource type="Texture2D" uid="uid://d1luao0hcrtp7" path="res://assets/decorations-red/FancyMansion_Furniture/fancy_mansion_furnitureset_withshadow.png" id="6_lp3pk"]
-[ext_resource type="Script" uid="uid://cy0t40hunjluv" path="res://scripts/fishbowl_button.gd" id="7_a8hem"]
+[ext_resource type="Script" uid="uid://cy0t40hunjluv" path="res://scripts/env_drag_button.gd" id="7_a8hem"]
 [ext_resource type="Texture2D" uid="uid://bk7hha3jxowvy" path="res://assets/fishbowl/bowl-button-mask.png" id="7_piyae"]
-[ext_resource type="PackedScene" uid="uid://cjwu5caouwots" path="res://scenes/food_beef_steak.tscn" id="8_iqb7n"]
-[ext_resource type="PackedScene" uid="uid://dugy6krxqgh8k" path="res://scenes/food_salmon_steak.tscn" id="8_moe7a"]
+[ext_resource type="PackedScene" uid="uid://cjwu5caouwots" path="res://scenes/collectables/collectable_beef_steak.tscn" id="8_x2463"]
 [ext_resource type="Script" uid="uid://borgoayefar43" path="res://scripts/resize_button.gd" id="9_1xn47"]
-[ext_resource type="PackedScene" uid="uid://ck3ms4ncapggs" path="res://scenes/bubble.tscn" id="10_6mvqw"]
+[ext_resource type="PackedScene" uid="uid://cf4ojjraxkolw" path="res://scenes/collectables/collectable_roast_chicken.tscn" id="9_epjyj"]
+[ext_resource type="PackedScene" uid="uid://ck3ms4ncapggs" path="res://scenes/ambient_particle.tscn" id="10_6mvqw"]
+[ext_resource type="PackedScene" uid="uid://dugy6krxqgh8k" path="res://scenes/collectables/collectable_salmon_steak.tscn" id="10_cd3j1"]
 [ext_resource type="Script" uid="uid://dca63p2n6h2t0" path="res://scripts/tooltip.gd" id="10_qv3t7"]
-[ext_resource type="PackedScene" uid="uid://cf4ojjraxkolw" path="res://scenes/food_roast_chicken.tscn" id="10_wcoob"]
 [ext_resource type="Texture2D" uid="uid://myoooe623v35" path="res://assets/bubble/Bubble/24_Pixels006.png" id="11_fdxaj"]
 [ext_resource type="Texture2D" uid="uid://cv4v4yv0exu4j" path="res://assets/ui/IconGodotNode/node_3D/icon_area_meteo.png" id="11_s4kht"]
 [ext_resource type="Texture2D" uid="uid://5ea7r1ioqava" path="res://assets/bubble/Bubble/24_Pixels007.png" id="12_d2j15"]
@@ -66,7 +66,7 @@ shader_parameter/speed = 2.0
 shader_parameter/wave_frequency = 20.0
 shader_parameter/wave_length = 200.0
 
-[node name="SwordBowl" type="Node2D" unique_id=1241587242]
+[node name="Environment" type="Node2D" unique_id=1241587242]
 script = ExtResource("1_cvxmx")
 
 [node name="BackgroundLayer" type="Node2D" parent="." unique_id=1964798781]
@@ -88,7 +88,7 @@ position = Vector2(175.00002, 60.000004)
 scale = Vector2(5.6096487, 5.609649)
 texture = ExtResource("5_wgxn2")
 region_enabled = true
-region_rect = Rect2(242, 366, 57, 83)
+region_rect = Rect2(243, 368, 56, 81)
 
 [node name="grass1" type="Sprite2D" parent="BackgroundLayer/Decor" unique_id=355404875]
 material = SubResource("ShaderMaterial_wgxn2")
@@ -311,32 +311,33 @@ region_rect = Rect2(1, 180, 63, 46)
 
 [node name="Gameplay" type="Node2D" parent="." unique_id=6246725]
 
-[node name="FoodContainer" type="Node2D" parent="Gameplay" unique_id=1459091898]
+[node name="ItemSpawner" type="Node2D" parent="Gameplay" unique_id=1459091898]
 position = Vector2(-537, -552)
 script = ExtResource("2_160m0")
-food_scenes = Array[PackedScene]([ExtResource("8_iqb7n"), ExtResource("8_moe7a"), ExtResource("10_wcoob")])
+spawnable_items = Array[PackedScene]([ExtResource("8_x2463"), ExtResource("9_epjyj"), ExtResource("10_cd3j1")])
 
-[node name="Sword" parent="Gameplay" unique_id=1045126170 instance=ExtResource("2_sm2eq")]
+[node name="MainActor" parent="Gameplay" unique_id=1045126170 instance=ExtResource("2_sm2eq")]
 position = Vector2(0, -1)
+collision_layer = 4
 
-[node name="Bubbles" type="Node2D" parent="Gameplay" unique_id=201727072]
+[node name="AmbientParticles" type="Node2D" parent="Gameplay" unique_id=201727072]
 
-[node name="bubble" parent="Gameplay/Bubbles" unique_id=864270088 instance=ExtResource("10_6mvqw")]
+[node name="bubble" parent="Gameplay/AmbientParticles" unique_id=864270088 instance=ExtResource("10_6mvqw")]
 position = Vector2(151, 272)
 
-[node name="bubble2" parent="Gameplay/Bubbles" unique_id=440527981 instance=ExtResource("10_6mvqw")]
+[node name="bubble2" parent="Gameplay/AmbientParticles" unique_id=440527981 instance=ExtResource("10_6mvqw")]
 position = Vector2(-300, 221)
 image = ExtResource("11_fdxaj")
 
-[node name="bubble3" parent="Gameplay/Bubbles" unique_id=639860912 instance=ExtResource("10_6mvqw")]
+[node name="bubble3" parent="Gameplay/AmbientParticles" unique_id=639860912 instance=ExtResource("10_6mvqw")]
 position = Vector2(38, 53)
 image = ExtResource("12_d2j15")
 
-[node name="bubble4" parent="Gameplay/Bubbles" unique_id=2049470766 instance=ExtResource("10_6mvqw")]
+[node name="bubble4" parent="Gameplay/AmbientParticles" unique_id=2049470766 instance=ExtResource("10_6mvqw")]
 position = Vector2(-166, 46)
 image = ExtResource("13_6f0id")
 
-[node name="bubble5" parent="Gameplay/Bubbles" unique_id=215775536 instance=ExtResource("10_6mvqw")]
+[node name="bubble5" parent="Gameplay/AmbientParticles" unique_id=215775536 instance=ExtResource("10_6mvqw")]
 position = Vector2(50, 295)
 image = ExtResource("14_4sm5s")
 
@@ -347,7 +348,7 @@ texture = ExtResource("2_yq0v6")
 
 [node name="InputLayers" type="Node2D" parent="." unique_id=1512028001]
 
-[node name="FishbowlButton" type="TextureButton" parent="InputLayers" unique_id=802616504 node_paths=PackedStringArray("sound_glass_slide", "sound_glass_place")]
+[node name="EnvDragButton" type="TextureButton" parent="InputLayers" unique_id=802616504 node_paths=PackedStringArray("sound_glass_slide", "sound_glass_place")]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -518.0
 offset_top = -532.0
@@ -355,10 +356,10 @@ offset_right = 521.0
 offset_bottom = 528.0
 texture_normal = ExtResource("7_piyae")
 script = ExtResource("7_a8hem")
-sound_glass_slide = NodePath("../../Audio/sound_glass_slide")
-sound_glass_place = NodePath("../../Audio/sound_glass_place")
+sound_glass_slide = NodePath("../../Audio/SfxInteractionStart")
+sound_glass_place = NodePath("../../Audio/SfxInteractionEnd")
 
-[node name="WaterButton" type="TextureButton" parent="InputLayers" unique_id=244522826]
+[node name="InputAreaButton" type="TextureButton" parent="InputLayers" unique_id=244522826]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -537.0
 offset_top = -552.0
@@ -376,8 +377,8 @@ offset_top = 357.0
 offset_right = 311.0
 offset_bottom = 457.0
 script = ExtResource("9_1xn47")
-sound_glass_slide = NodePath("../../Audio/sound_glass_slide")
-sound_glass_place = NodePath("../../Audio/sound_glass_place")
+sound_glass_slide = NodePath("../../Audio/SfxInteractionStart")
+sound_glass_place = NodePath("../../Audio/SfxInteractionEnd")
 
 [node name="MuteButton" type="Button" parent="Interface" unique_id=686216863]
 self_modulate = Color(1, 1, 1, 0)
@@ -396,10 +397,10 @@ images = Array[CompressedTexture2D]([ExtResource("11_s4kht"), ExtResource("12_g1
 
 [node name="Audio" type="Node2D" parent="." unique_id=232762076]
 
-[node name="sound_glass_slide" type="AudioStreamPlayer2D" parent="Audio" unique_id=2136359437]
+[node name="SfxInteractionStart" type="AudioStreamPlayer2D" parent="Audio" unique_id=2136359437]
 script = ExtResource("26_d2j15")
 sounds = Array[AudioStream]([ExtResource("27_siao6"), ExtResource("28_cvxmx"), ExtResource("29_moe7a"), ExtResource("30_iqb7n")])
 
-[node name="sound_glass_place" type="AudioStreamPlayer2D" parent="Audio" unique_id=1282610348]
+[node name="SfxInteractionEnd" type="AudioStreamPlayer2D" parent="Audio" unique_id=1282610348]
 script = ExtResource("26_d2j15")
 sounds = Array[AudioStream]([ExtResource("31_wcoob"), ExtResource("32_h4txo"), ExtResource("33_fa3ed"), ExtResource("34_q2nlx")])

@@ -4,12 +4,12 @@
 
 ### scenes
 
-**bubble.tscn**
+**ambient_particle.tscn**
 ```ini
 [gd_scene format=3 uid="uid://ck3ms4ncapggs"]
 
 [ext_resource type="Texture2D" uid="uid://dgx3s17dnqoe4" path="res://assets/bubble/Bubble/bubble.png" id="1_2vdav"]
-[ext_resource type="Script" uid="uid://dkgks0gcs4lnb" path="res://scripts/bubble.gd" id="2_pm753"]
+[ext_resource type="Script" uid="uid://dkgks0gcs4lnb" path="res://scripts/ambient_particle.gd" id="2_pm753"]
 [ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="3_b4vvx"]
 [ext_resource type="AudioStream" uid="uid://baumfylghpkl0" path="res://assets/audio/audio_bubbles_1.ogg" id="4_ax11v"]
 [ext_resource type="AudioStream" uid="uid://fty5wfqfpvh7" path="res://assets/audio/audio_bubbles_2.ogg" id="5_8ycye"]
@@ -41,28 +41,31 @@ sounds = Array[AudioStream]([ExtResource("4_ax11v"), ExtResource("5_8ycye"), Ext
 
 ```
 
-**food.tscn**
+#### collectables
+
+**collectable_beef_steak.tscn**
 ```ini
 [gd_scene format=3 uid="uid://cjwu5caouwots"]
 
-[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/food.gd" id="1_af40f"]
-[ext_resource type="Texture2D" uid="uid://4nifjej2syy4" path="res://assets/food/meats/pixel-meats-60/tbone-steak.png" id="1_xven1"]
-[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="3_370ap"]
-[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="4_qjm1k"]
-[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="5_wobble"]
+[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/collectable_item.gd" id="1_x4rya"]
+[ext_resource type="Texture2D" uid="uid://4nifjej2syy4" path="res://assets/food/meats/pixel-meats-60/tbone-steak.png" id="2_fp84d"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_8x7em"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_ngdn8"]
+[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="5_50o52"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xven1"]
 radius = 24.020824
 
-[node name="Food" type="CharacterBody2D" unique_id=188966436]
-script = ExtResource("1_af40f")
+[node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+collision_layer = 2
+script = ExtResource("1_x4rya")
 
 [node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]
 scale = Vector2(0.75, 0.75)
-texture = ExtResource("1_xven1")
+texture = ExtResource("2_fp84d")
 
 [node name="Wobbler" type="Node" parent="FoodSprite" unique_id=521162899]
-script = ExtResource("5_wobble")
+script = ExtResource("3_8x7em")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833101611]
 position = Vector2(-2, 1)
@@ -75,94 +78,115 @@ one_shot = true
 autostart = true
 
 [node name="AudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1877776765]
-script = ExtResource("3_370ap")
-sounds = Array[AudioStream]([ExtResource("4_qjm1k")])
+script = ExtResource("4_ngdn8")
+sounds = Array[AudioStream]([ExtResource("5_50o52")])
 
 ```
 
-**sword.tscn**
+**collectable_roast_chicken.tscn**
 ```ini
-[gd_scene format=3 uid="uid://csvs8daxl78ib"]
+[gd_scene format=3 uid="uid://cf4ojjraxkolw"]
 
-[ext_resource type="Script" uid="uid://bx1j41mbkmg03" path="res://scripts/sword.gd" id="1_n355p"]
-[ext_resource type="Texture2D" uid="uid://cg4ldudcq64pb" path="res://assets/swords/sword_01_centred_cropped.png" id="2_p4x8v"]
-[ext_resource type="Texture2D" uid="uid://b0v7lx1uwgwaq" path="res://assets/swords/sword_03_centred_cropped.png" id="2_s4ec8"]
-[ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/sword_sprite.gd" id="3_s4ec8"]
-[ext_resource type="Script" uid="uid://cy0fauicqjaru" path="res://scripts/eater_component.gd" id="4_k5whp"]
-[ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="5_1yp6w"]
-[ext_resource type="Texture2D" uid="uid://dy36mifyc88l3" path="res://assets/swords/sword_04_centred_cropped.png" id="5_3oqan"]
-[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="6_fnw8x"]
-[ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="6_sjcpw"]
-[ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="7_cp3m4"]
-[ext_resource type="Script" uid="uid://bvol6us60gsyj" path="res://scripts/wander_component.gd" id="11_3oqan"]
-[ext_resource type="AudioStream" uid="uid://cepxjtdlyv5gx" path="res://assets/audio/audio_pop.ogg" id="11_sjcpw"]
-[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="12_wobble"]
+[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/collectable_item.gd" id="1_21vmo"]
+[ext_resource type="Texture2D" uid="uid://3jjyaun7mf3" path="res://assets/food/meats/pixel-meats-60/roast-chicken.png" id="2_21vmo"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_ruacp"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_37fo0"]
+[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="5_kycwo"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_s4ec8"]
-radius = 15.0
+[sub_resource type="CircleShape2D" id="CircleShape2D_xven1"]
+radius = 24.020824
 
-[node name="sword" type="CharacterBody2D" unique_id=1045126170]
-script = ExtResource("1_n355p")
+[node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+collision_layer = 2
+script = ExtResource("1_21vmo")
 
-[node name="Collision" type="Node2D" parent="." unique_id=337010671]
+[node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_21vmo")
 
-[node name="EaterComponent" type="Area2D" parent="Collision" unique_id=1040540972 node_paths=PackedStringArray("sound_chomp", "sword_sprite")]
-script = ExtResource("4_k5whp")
-sound_chomp = NodePath("../../Systems/AudioPlayer")
-sword_sprite = NodePath("../../Visuals/SwordSprite")
+[node name="Wobbler" type="Node" parent="FoodSprite" unique_id=521162899]
+script = ExtResource("3_ruacp")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/EaterComponent" unique_id=1734053575]
-shape = SubResource("CircleShape2D_s4ec8")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833101611]
+position = Vector2(-2, 1)
+shape = SubResource("CircleShape2D_xven1")
+disabled = true
 
-[node name="Visuals" type="Node2D" parent="." unique_id=1128011115]
-
-[node name="SwordSprite" type="Sprite2D" parent="Visuals" unique_id=1885588746 node_paths=PackedStringArray("sword_area", "level_up_audio")]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("2_p4x8v")
-script = ExtResource("3_s4ec8")
-sword_area = NodePath("../../Collision/EaterComponent")
-images = Array[CompressedTexture2D]([ExtResource("2_s4ec8"), ExtResource("5_3oqan"), ExtResource("6_sjcpw")])
-level_up_audio = NodePath("../../Systems/LevelUpAudio")
-
-[node name="Wobbler" type="Node" parent="Visuals/SwordSprite" unique_id=1802543979]
-script = ExtResource("12_wobble")
-
-[node name="Systems" type="Node2D" parent="." unique_id=1345695038]
-
-[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="Systems" unique_id=667205689]
-stream = ExtResource("5_1yp6w")
-script = ExtResource("6_fnw8x")
-sounds = Array[AudioStream]([ExtResource("5_1yp6w"), ExtResource("7_cp3m4")])
-
-[node name="LevelUpAudio" type="AudioStreamPlayer2D" parent="Systems" unique_id=1988410756]
-script = ExtResource("6_fnw8x")
-sounds = Array[AudioStream]([ExtResource("11_sjcpw")])
-
-[node name="WanderComponent" type="Timer" parent="Systems" unique_id=1383127507]
+[node name="Timer" type="Timer" parent="." unique_id=1289094684]
+wait_time = 0.1
+one_shot = true
 autostart = true
-script = ExtResource("11_3oqan")
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1877776765]
+script = ExtResource("4_37fo0")
+sounds = Array[AudioStream]([ExtResource("5_kycwo")])
 
 ```
 
-**swordbowl.tscn**
+**collectable_salmon_steak.tscn**
 ```ini
-[gd_scene format=3 uid="uid://cl0bp48oawp3c"]
+[gd_scene format=3 uid="uid://dugy6krxqgh8k"]
 
-[ext_resource type="Script" uid="uid://dtsi1344gg50n" path="res://scripts/bowl_manager.gd" id="1_cvxmx"]
+[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/collectable_item.gd" id="1_fj8r0"]
+[ext_resource type="Texture2D" uid="uid://cw8ku4vhl7vd2" path="res://assets/food/meats/pixel-meats-60/salmon-steak.png" id="2_fj8r0"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_njvfd"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_1ul2v"]
+[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="5_7qgem"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xven1"]
+radius = 24.020824
+
+[node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+collision_layer = 2
+script = ExtResource("1_fj8r0")
+
+[node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_fj8r0")
+
+[node name="Wobbler" type="Node" parent="FoodSprite" unique_id=521162899]
+script = ExtResource("3_njvfd")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833101611]
+position = Vector2(-2, 1)
+shape = SubResource("CircleShape2D_xven1")
+disabled = true
+
+[node name="Timer" type="Timer" parent="." unique_id=1289094684]
+wait_time = 0.1
+one_shot = true
+autostart = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1877776765]
+script = ExtResource("4_1ul2v")
+sounds = Array[AudioStream]([ExtResource("5_7qgem")])
+
+```
+
+### scenes
+
+**environment.tscn**
+```ini
+[gd_scene format=3 uid="uid://c30gtcxp6tgj5"]
+
+[ext_resource type="Script" uid="uid://dtsi1344gg50n" path="res://scripts/environment_manager.gd" id="1_cvxmx"]
 [ext_resource type="Texture2D" uid="uid://do8o2ujm325ht" path="res://assets/fishbowl/fishbowl-back.png" id="1_yppm6"]
-[ext_resource type="Script" uid="uid://si67dpiucc1f" path="res://scripts/food_container.gd" id="2_160m0"]
-[ext_resource type="PackedScene" uid="uid://csvs8daxl78ib" path="res://scenes/sword.tscn" id="2_sm2eq"]
+[ext_resource type="Script" uid="uid://si67dpiucc1f" path="res://scripts/item_spawner.gd" id="2_160m0"]
+[ext_resource type="PackedScene" uid="uid://csvs8daxl78ib" path="res://scenes/simulation_actor.tscn" id="2_sm2eq"]
 [ext_resource type="Texture2D" uid="uid://b4bw4shxm0xc2" path="res://assets/fishbowl/fishbowl-front.png" id="2_yq0v6"]
 [ext_resource type="Texture2D" uid="uid://5hqnmn7m1h26" path="res://assets/fishbowl/water-button-mask.png" id="4_sm2eq"]
 [ext_resource type="Texture2D" uid="uid://cqiohtj5vftn0" path="res://assets/decorations-red/halloween pumpkins/pumpkins-outline.png" id="5_hh614"]
-[ext_resource type="Script" uid="uid://cxkl2f0fgj1ia" path="res://scripts/water_button.gd" id="5_ll3wk"]
+[ext_resource type="Script" uid="uid://cxkl2f0fgj1ia" path="res://scripts/input_area_button.gd" id="5_ll3wk"]
 [ext_resource type="Shader" uid="uid://bh10a8xql5crr" path="res://shaders/foliage.tres" id="5_lp3pk"]
 [ext_resource type="Texture2D" uid="uid://dc0pxlfbjqv7n" path="res://assets/decorations-red/Graveyard/Graveyard_Set.png" id="5_wgxn2"]
 [ext_resource type="Texture2D" uid="uid://d1luao0hcrtp7" path="res://assets/decorations-red/FancyMansion_Furniture/fancy_mansion_furnitureset_withshadow.png" id="6_lp3pk"]
-[ext_resource type="Script" uid="uid://cy0t40hunjluv" path="res://scripts/fishbowl_button.gd" id="7_a8hem"]
+[ext_resource type="Script" uid="uid://cy0t40hunjluv" path="res://scripts/env_drag_button.gd" id="7_a8hem"]
 [ext_resource type="Texture2D" uid="uid://bk7hha3jxowvy" path="res://assets/fishbowl/bowl-button-mask.png" id="7_piyae"]
+[ext_resource type="PackedScene" uid="uid://cjwu5caouwots" path="res://scenes/collectables/collectable_beef_steak.tscn" id="8_x2463"]
 [ext_resource type="Script" uid="uid://borgoayefar43" path="res://scripts/resize_button.gd" id="9_1xn47"]
-[ext_resource type="PackedScene" uid="uid://ck3ms4ncapggs" path="res://scenes/bubble.tscn" id="10_6mvqw"]
+[ext_resource type="PackedScene" uid="uid://cf4ojjraxkolw" path="res://scenes/collectables/collectable_roast_chicken.tscn" id="9_epjyj"]
+[ext_resource type="PackedScene" uid="uid://ck3ms4ncapggs" path="res://scenes/ambient_particle.tscn" id="10_6mvqw"]
+[ext_resource type="PackedScene" uid="uid://dugy6krxqgh8k" path="res://scenes/collectables/collectable_salmon_steak.tscn" id="10_cd3j1"]
 [ext_resource type="Script" uid="uid://dca63p2n6h2t0" path="res://scripts/tooltip.gd" id="10_qv3t7"]
 [ext_resource type="Texture2D" uid="uid://myoooe623v35" path="res://assets/bubble/Bubble/24_Pixels006.png" id="11_fdxaj"]
 [ext_resource type="Texture2D" uid="uid://cv4v4yv0exu4j" path="res://assets/ui/IconGodotNode/node_3D/icon_area_meteo.png" id="11_s4kht"]
@@ -211,7 +235,7 @@ shader_parameter/speed = 2.0
 shader_parameter/wave_frequency = 20.0
 shader_parameter/wave_length = 200.0
 
-[node name="SwordBowl" type="Node2D" unique_id=1241587242]
+[node name="Environment" type="Node2D" unique_id=1241587242]
 script = ExtResource("1_cvxmx")
 
 [node name="BackgroundLayer" type="Node2D" parent="." unique_id=1964798781]
@@ -233,7 +257,7 @@ position = Vector2(175.00002, 60.000004)
 scale = Vector2(5.6096487, 5.609649)
 texture = ExtResource("5_wgxn2")
 region_enabled = true
-region_rect = Rect2(242, 366, 57, 83)
+region_rect = Rect2(243, 368, 56, 81)
 
 [node name="grass1" type="Sprite2D" parent="BackgroundLayer/Decor" unique_id=355404875]
 material = SubResource("ShaderMaterial_wgxn2")
@@ -456,31 +480,33 @@ region_rect = Rect2(1, 180, 63, 46)
 
 [node name="Gameplay" type="Node2D" parent="." unique_id=6246725]
 
-[node name="FoodContainer" type="Node2D" parent="Gameplay" unique_id=1459091898]
+[node name="ItemSpawner" type="Node2D" parent="Gameplay" unique_id=1459091898]
 position = Vector2(-537, -552)
 script = ExtResource("2_160m0")
+spawnable_items = Array[PackedScene]([ExtResource("8_x2463"), ExtResource("9_epjyj"), ExtResource("10_cd3j1")])
 
-[node name="Sword" parent="Gameplay" unique_id=1045126170 instance=ExtResource("2_sm2eq")]
+[node name="MainActor" parent="Gameplay" unique_id=1045126170 instance=ExtResource("2_sm2eq")]
 position = Vector2(0, -1)
+collision_layer = 4
 
-[node name="Bubbles" type="Node2D" parent="Gameplay" unique_id=201727072]
+[node name="AmbientParticles" type="Node2D" parent="Gameplay" unique_id=201727072]
 
-[node name="bubble" parent="Gameplay/Bubbles" unique_id=864270088 instance=ExtResource("10_6mvqw")]
+[node name="bubble" parent="Gameplay/AmbientParticles" unique_id=864270088 instance=ExtResource("10_6mvqw")]
 position = Vector2(151, 272)
 
-[node name="bubble2" parent="Gameplay/Bubbles" unique_id=440527981 instance=ExtResource("10_6mvqw")]
+[node name="bubble2" parent="Gameplay/AmbientParticles" unique_id=440527981 instance=ExtResource("10_6mvqw")]
 position = Vector2(-300, 221)
 image = ExtResource("11_fdxaj")
 
-[node name="bubble3" parent="Gameplay/Bubbles" unique_id=639860912 instance=ExtResource("10_6mvqw")]
+[node name="bubble3" parent="Gameplay/AmbientParticles" unique_id=639860912 instance=ExtResource("10_6mvqw")]
 position = Vector2(38, 53)
 image = ExtResource("12_d2j15")
 
-[node name="bubble4" parent="Gameplay/Bubbles" unique_id=2049470766 instance=ExtResource("10_6mvqw")]
+[node name="bubble4" parent="Gameplay/AmbientParticles" unique_id=2049470766 instance=ExtResource("10_6mvqw")]
 position = Vector2(-166, 46)
 image = ExtResource("13_6f0id")
 
-[node name="bubble5" parent="Gameplay/Bubbles" unique_id=215775536 instance=ExtResource("10_6mvqw")]
+[node name="bubble5" parent="Gameplay/AmbientParticles" unique_id=215775536 instance=ExtResource("10_6mvqw")]
 position = Vector2(50, 295)
 image = ExtResource("14_4sm5s")
 
@@ -491,7 +517,7 @@ texture = ExtResource("2_yq0v6")
 
 [node name="InputLayers" type="Node2D" parent="." unique_id=1512028001]
 
-[node name="FishbowlButton" type="TextureButton" parent="InputLayers" unique_id=802616504 node_paths=PackedStringArray("sound_glass_slide", "sound_glass_place")]
+[node name="EnvDragButton" type="TextureButton" parent="InputLayers" unique_id=802616504 node_paths=PackedStringArray("sound_glass_slide", "sound_glass_place")]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -518.0
 offset_top = -532.0
@@ -499,10 +525,10 @@ offset_right = 521.0
 offset_bottom = 528.0
 texture_normal = ExtResource("7_piyae")
 script = ExtResource("7_a8hem")
-sound_glass_slide = NodePath("../../Audio/sound_glass_slide")
-sound_glass_place = NodePath("../../Audio/sound_glass_place")
+sound_glass_slide = NodePath("../../Audio/SfxInteractionStart")
+sound_glass_place = NodePath("../../Audio/SfxInteractionEnd")
 
-[node name="WaterButton" type="TextureButton" parent="InputLayers" unique_id=244522826]
+[node name="InputAreaButton" type="TextureButton" parent="InputLayers" unique_id=244522826]
 self_modulate = Color(1, 1, 1, 0)
 offset_left = -537.0
 offset_top = -552.0
@@ -520,8 +546,8 @@ offset_top = 357.0
 offset_right = 311.0
 offset_bottom = 457.0
 script = ExtResource("9_1xn47")
-sound_glass_slide = NodePath("../../Audio/sound_glass_slide")
-sound_glass_place = NodePath("../../Audio/sound_glass_place")
+sound_glass_slide = NodePath("../../Audio/SfxInteractionStart")
+sound_glass_place = NodePath("../../Audio/SfxInteractionEnd")
 
 [node name="MuteButton" type="Button" parent="Interface" unique_id=686216863]
 self_modulate = Color(1, 1, 1, 0)
@@ -540,13 +566,80 @@ images = Array[CompressedTexture2D]([ExtResource("11_s4kht"), ExtResource("12_g1
 
 [node name="Audio" type="Node2D" parent="." unique_id=232762076]
 
-[node name="sound_glass_slide" type="AudioStreamPlayer2D" parent="Audio" unique_id=2136359437]
+[node name="SfxInteractionStart" type="AudioStreamPlayer2D" parent="Audio" unique_id=2136359437]
 script = ExtResource("26_d2j15")
 sounds = Array[AudioStream]([ExtResource("27_siao6"), ExtResource("28_cvxmx"), ExtResource("29_moe7a"), ExtResource("30_iqb7n")])
 
-[node name="sound_glass_place" type="AudioStreamPlayer2D" parent="Audio" unique_id=1282610348]
+[node name="SfxInteractionEnd" type="AudioStreamPlayer2D" parent="Audio" unique_id=1282610348]
 script = ExtResource("26_d2j15")
 sounds = Array[AudioStream]([ExtResource("31_wcoob"), ExtResource("32_h4txo"), ExtResource("33_fa3ed"), ExtResource("34_q2nlx")])
+
+```
+
+**simulation_actor.tscn**
+```ini
+[gd_scene format=3 uid="uid://csvs8daxl78ib"]
+
+[ext_resource type="Script" uid="uid://bx1j41mbkmg03" path="res://scripts/simulation_actor.gd" id="1_pdis7"]
+[ext_resource type="Script" uid="uid://s6f85m5kv6m" path="res://scripts/collector_component.gd" id="2_bkxya"]
+[ext_resource type="Texture2D" uid="uid://cg4ldudcq64pb" path="res://assets/swords/sword_01_centred_cropped.png" id="3_2ffig"]
+[ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/actor_sprite.gd" id="4_ae0te"]
+[ext_resource type="Texture2D" uid="uid://b0v7lx1uwgwaq" path="res://assets/swords/sword_03_centred_cropped.png" id="5_3xjdu"]
+[ext_resource type="Texture2D" uid="uid://dy36mifyc88l3" path="res://assets/swords/sword_04_centred_cropped.png" id="6_qmrim"]
+[ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="7_2vo8j"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="8_kks63"]
+[ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="9_omtpl"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="10_m4itm"]
+[ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="11_vmmm3"]
+[ext_resource type="AudioStream" uid="uid://cepxjtdlyv5gx" path="res://assets/audio/audio_pop.ogg" id="12_kc73g"]
+[ext_resource type="Script" uid="uid://byf72q5aanvek" path="res://scripts/wander_component.gd" id="13_xv3fs"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s4ec8"]
+radius = 15.0
+
+[node name="Actor" type="CharacterBody2D" unique_id=1045126170]
+script = ExtResource("1_pdis7")
+
+[node name="Collision" type="Node2D" parent="." unique_id=337010671]
+
+[node name="CollectorComponent" type="Area2D" parent="Collision" unique_id=1040540972 node_paths=PackedStringArray("sound_interaction")]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("2_bkxya")
+sound_interaction = NodePath("../../Systems/SfxAction")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/CollectorComponent" unique_id=1734053575]
+shape = SubResource("CircleShape2D_s4ec8")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1128011115]
+
+[node name="ActorSprite" type="Sprite2D" parent="Visuals" unique_id=1885588746 node_paths=PackedStringArray("level_up_audio")]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_2ffig")
+script = ExtResource("4_ae0te")
+images = Array[CompressedTexture2D]([ExtResource("5_3xjdu"), ExtResource("6_qmrim"), ExtResource("7_2vo8j")])
+level_up_audio = NodePath("../../Systems/LevelUpAudio")
+
+[node name="Wobbler" type="Node" parent="Visuals/ActorSprite" unique_id=1802543979]
+script = ExtResource("8_kks63")
+
+[node name="MouthMarker" type="Marker2D" parent="Visuals" unique_id=11788898]
+position = Vector2(47, 0)
+
+[node name="Systems" type="Node2D" parent="." unique_id=1345695038]
+
+[node name="SfxAction" type="AudioStreamPlayer2D" parent="Systems" unique_id=667205689]
+stream = ExtResource("9_omtpl")
+script = ExtResource("10_m4itm")
+sounds = Array[AudioStream]([ExtResource("9_omtpl"), ExtResource("11_vmmm3")])
+
+[node name="LevelUpAudio" type="AudioStreamPlayer2D" parent="Systems" unique_id=1988410756]
+script = ExtResource("10_m4itm")
+sounds = Array[AudioStream]([ExtResource("12_kc73g")])
+
+[node name="WanderComponent" type="Timer" parent="Systems" unique_id=1383127507]
+autostart = true
+script = ExtResource("13_xv3fs")
 
 ```
 
@@ -554,14 +647,14 @@ sounds = Array[AudioStream]([ExtResource("31_wcoob"), ExtResource("32_h4txo"), E
 ```ini
 [gd_scene format=3 uid="uid://c6r16h5bv21o4"]
 
-[ext_resource type="PackedScene" uid="uid://cl0bp48oawp3c" path="res://scenes/swordbowl.tscn" id="1_nnsk1"]
 [ext_resource type="Script" uid="uid://bc3hjypbtu16" path="res://scripts/world.gd" id="1_rwgxs"]
+[ext_resource type="PackedScene" uid="uid://c30gtcxp6tgj5" path="res://scenes/environment.tscn" id="2_rwgxs"]
 
 [node name="World" type="Node2D" unique_id=2063660062]
 script = ExtResource("1_rwgxs")
 
-[node name="SwordBowl" parent="." unique_id=1241587242 instance=ExtResource("1_nnsk1")]
-position = Vector2(506, 553)
+[node name="Environment" parent="." unique_id=1241587242 instance=ExtResource("2_rwgxs")]
+position = Vector2(537, 524)
 
 ```
 

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Feed The Sword"
-run/main_scene="uid://c6r16h5bv21o4"
+run/main_scene="uid://cl4qi6gnogt65"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="uid://dwgy7blrhpt5i"
 config/windows_native_icon="res://assets/sword_01.ico"
@@ -35,6 +35,13 @@ window/per_pixel_transparency/allowed=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/flatten_for_llm/plugin.cfg", "res://addons/godot_mcp/plugin.cfg")
+
+[layer_names]
+
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Collectables"
+2d_physics/layer_3="Actors"
+2d_physics/layer_4="Zones"
 
 [physics]
 

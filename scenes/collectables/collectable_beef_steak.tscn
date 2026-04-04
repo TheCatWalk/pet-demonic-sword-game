@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cjwu5caouwots"]
 
-[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/food.gd" id="1_x4rya"]
+[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/collectable_item.gd" id="1_x4rya"]
 [ext_resource type="Texture2D" uid="uid://4nifjej2syy4" path="res://assets/food/meats/pixel-meats-60/tbone-steak.png" id="2_fp84d"]
 [ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_8x7em"]
 [ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_ngdn8"]
@@ -10,6 +10,7 @@
 radius = 24.020824
 
 [node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+collision_layer = 2
 script = ExtResource("1_x4rya")
 
 [node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]

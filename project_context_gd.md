@@ -4,84 +4,33 @@
 
 ### scripts
 
-#### autoloads
-
-**global.gd**
+**actor_sprite.gd**
 ```gdscript
-extends Node
+extends Sprite2D
 
-var mouse_in_water: bool = false
+@export var images: Array[CompressedTexture2D]
+@export var level_up_audio: AudioStreamPlayer2D
 
-signal water_clicked (_global_position)
-#	water_button -> food_container
+@onready var mouth_marker: Marker2D = $"../MouthMarker"
 
-signal show_tooltip(_index)
-signal hide_tooltip
-#called from water-button, resize-button, fishbowl-button, mute-button -> tooltip
+func set_image(_index: int) -> void:
+	if _index < images.size():
+		texture = images[_index]
+
+		var half_width = (texture.get_width() * scale.x) / 2.0
+
+		if mouth_marker:
+			mouth_marker.position.x = half_width
+
+	if level_up_audio:
+		level_up_audio.play_sound()
+
+func on_evolved(stage_index: int) -> void:
+	set_image(stage_index)
 
 ```
 
-### scripts
-
-**bowl_manager.gd**
-```gdscript
-extends Node2D
-
-@onready var water_button = $"InputLayers/WaterButton"
-@onready var food_container = $"Gameplay/FoodContainer"
-@onready var tooltip = $"Interface/Tooltip"
-@onready var resize_button = $"Interface/ResizeButton"
-@onready var fishbowl_button = $"InputLayers/FishbowlButton"
-@onready var mute_button = $"Interface/MuteButton"
-
-func _ready() -> void:
-	water_button.water_entered.connect(_on_water_entered)
-	water_button.water_exited.connect(_on_water_exited)
-	water_button.water_pressed.connect(_on_water_pressed)
-
-	resize_button.hovered.connect(_on_button_hovered)
-	resize_button.unhovered.connect(_on_button_unhovered)
-
-	fishbowl_button.hovered.connect(_on_button_hovered)
-	fishbowl_button.unhovered.connect(_on_button_unhovered)
-
-	mute_button.hovered.connect(_on_button_hovered)
-	mute_button.unhovered.connect(_on_button_unhovered)
-
-func _process(_delta: float) -> void:
-	var sword = get_node_or_null("Gameplay/Sword")
-	if sword == null:
-		return
-	var foods = get_tree().get_nodes_in_group("food")
-	if foods.size() > 0:
-		sword.current_target = foods[0]
-	else:
-		sword.current_target = null
-
-func _on_water_entered():
-	var sword = get_node_or_null("Gameplay/Sword")
-	if sword:
-		sword.mouse_in_water = true
-	tooltip.show_tooltip(4)
-
-func _on_water_exited():
-	var sword = get_node_or_null("Gameplay/Sword")
-	if sword:
-		sword.mouse_in_water = false
-	tooltip.hide_tooltip()
-
-func _on_water_pressed(pos):
-	food_container.spawn_food(pos)
-
-func _on_button_hovered(index):
-	tooltip.show_tooltip(index)
-
-func _on_button_unhovered():
-	tooltip.hide_tooltip()
-
-```
-
-**bubble.gd**
+**ambient_particle.gd**
 ```gdscript
 extends CPUParticles2D
 
@@ -102,11 +51,29 @@ func on_timeout():
 
 ```
 
-**eater_component.gd**
+**collectable_item.gd**
+```gdscript
+extends CharacterBody2D
+@onready var timer: Timer = $Timer
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+@onready var sound_drop: AudioStreamPlayer2D = $AudioPlayer
+
+func _ready() -> void:
+	timer.timeout.connect(enable_collision)
+	sound_drop.play_sound()
+
+func enable_collision():
+	collision_shape_2d.disabled = false
+
+func consume():
+	queue_free()
+
+```
+
+**collector_component.gd**
 ```gdscript
 extends Area2D
-@export var sound_chomp: AudioStreamPlayer2D
-@export var sword_sprite: Sprite2D
+@export var sound_interaction: AudioStreamPlayer2D
 
 func _ready() -> void:
 	body_entered.connect(on_body_entered)
@@ -114,12 +81,12 @@ func _ready() -> void:
 func on_body_entered(body):
 	if body.has_method("consume"):
 		body.consume()
-		sound_chomp.play_sound()
-		owner.advance_level()
+		sound_interaction.play_sound()
+		owner.on_interaction_success()
 
 ```
 
-**fishbowl_button.gd**
+**env_drag_button.gd**
 ```gdscript
 extends TextureButton
 @export var sound_glass_slide: AudioStreamPlayer2D
@@ -155,35 +122,114 @@ func on_mouse_exited():
 
 ```
 
-**food.gd**
+**environment_manager.gd**
 ```gdscript
-extends CharacterBody2D
-@onready var timer: Timer = $Timer
-@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-@onready var sound_drop: AudioStreamPlayer2D = $AudioPlayer
+extends Node2D
+
+@onready var input_area_button = $"InputLayers/InputAreaButton"
+@onready var item_spawner = $"Gameplay/ItemSpawner"
+@onready var tooltip = $"Interface/Tooltip"
+@onready var resize_button = $"Interface/ResizeButton"
+@onready var env_drag_button = $"InputLayers/EnvDragButton"
+@onready var mute_button = $"Interface/MuteButton"
 
 func _ready() -> void:
-	timer.timeout.connect(enable_collision)
-	add_to_group("food")
-	sound_drop.play_sound()
+	input_area_button.zone_entered.connect(_on_zone_entered)
+	input_area_button.zone_exited.connect(_on_zone_exited)
+	input_area_button.zone_pressed.connect(_on_zone_pressed)
 
-func enable_collision():
-	collision_shape_2d.disabled = false
+	resize_button.hovered.connect(_on_button_hovered)
+	resize_button.unhovered.connect(_on_button_unhovered)
 
-func consume():
-	queue_free()
+	env_drag_button.hovered.connect(_on_button_hovered)
+	env_drag_button.unhovered.connect(_on_button_unhovered)
+
+	mute_button.hovered.connect(_on_button_hovered)
+	mute_button.unhovered.connect(_on_button_unhovered)
+
+func _process(_delta: float) -> void:
+	var actor = get_node_or_null("Gameplay/MainActor")
+	if actor == null: return
+
+	# Handle Manual Input (Mouse)
+	if actor.is_input_active:
+		actor.chase_position = get_global_mouse_position()
+
+	# Handle Item Targeting (Check children directly instead of groups)
+	var items = item_spawner.get_children()
+	if items.size() > 0:
+		actor.current_target = items[0]
+	else:
+		actor.current_target = null
+
+func _on_zone_entered():
+	var actor = get_node_or_null("Gameplay/MainActor")
+	if actor:
+		actor.is_input_active = true
+	tooltip.show_tooltip(4)
+
+func _on_zone_exited():
+	var actor = get_node_or_null("Gameplay/MainActor")
+	if actor:
+		actor.is_input_active = false
+	tooltip.hide_tooltip()
+
+func _on_zone_pressed(pos):
+	item_spawner.spawn_item(pos)
+
+func _on_button_hovered(index):
+	tooltip.show_tooltip(index)
+
+func _on_button_unhovered():
+	tooltip.hide_tooltip()
 
 ```
 
-**food_container.gd**
+**input_area_button.gd**
+```gdscript
+extends TextureButton
+
+signal zone_entered
+signal zone_exited
+signal zone_pressed(pos)
+
+func _ready() -> void:
+	mouse_entered.connect(on_mouse_entered)
+	mouse_exited.connect(on_mouse_exited)
+	pressed.connect(on_pressed)
+	if texture_normal:
+		var image = texture_normal.get_image()
+		var bitmap = BitMap.new()
+		bitmap.create_from_image_alpha(image)
+		texture_click_mask = bitmap
+
+func on_mouse_entered():
+	zone_entered.emit()
+
+func on_mouse_exited():
+	zone_exited.emit()
+
+func on_pressed():
+	zone_pressed.emit(get_global_mouse_position())
+
+```
+
+**item_spawner.gd**
 ```gdscript
 extends Node2D
-const FOOD = preload("uid://cjwu5caouwots")
 
-func spawn_food(_global_position):
-	var new_food = FOOD.instantiate()
-	add_child(new_food)
-	new_food.global_position = _global_position
+@export var spawnable_items: Array[PackedScene] = []
+
+func spawn_item(_global_position):
+	if spawnable_items.is_empty():
+		push_warning("Spawner: No spawnable items assigned in the Inspector!")
+		return
+
+	var scene_to_spawn = spawnable_items.pick_random()
+	if scene_to_spawn:
+		var new_item = scene_to_spawn.instantiate()
+		add_child(new_item)
+		new_item.global_position = _global_position
 
 ```
 
@@ -210,9 +256,9 @@ func mute():
 
 func on_mouse_entered():
 	if muted:
-		hovered.emit(2)
-	else:
 		hovered.emit(3)
+	else:
+		hovered.emit(2)
 
 func on_mouse_exited():
 	unhovered.emit()
@@ -263,15 +309,18 @@ func on_mouse_exited():
 
 ```
 
-**sword.gd**
+**simulation_actor.gd**
 ```gdscript
 extends CharacterBody2D
-@onready var sword_sprite: Sprite2D = $Visuals/SwordSprite
-@onready var wander_component: Timer = $Systems/WanderComponent
-@onready var eater_component: Area2D = $Collision/EaterComponent
 
-var mouse_in_water: bool = false
-var food_counter: int = 0
+@onready var actor_sprite: Sprite2D = $Visuals/ActorSprite
+@onready var wander_component: Timer = $Systems/WanderComponent
+@onready var collector_component: Area2D = $Collision/CollectorComponent
+@onready var mouth_marker: Marker2D = $Visuals/MouthMarker
+
+var is_input_active: bool = false
+var chase_position: Vector2 = Vector2.ZERO
+var items_collected: int = 0
 var current_target: Node2D = null
 
 @export var movement_smoothness: float = 0.02
@@ -280,49 +329,33 @@ var current_target: Node2D = null
 signal leveled_up(stage_index)
 
 func _ready() -> void:
-	leveled_up.connect(sword_sprite.on_evolved)
+	leveled_up.connect(actor_sprite.on_evolved)
 
 func _physics_process(_delta: float) -> void:
-	if mouse_in_water:
-		update_orientation(get_global_mouse_position())
-		global_position = lerp(global_position, get_global_mouse_position() - eater_component.position, movement_smoothness)
+	if is_input_active:
+		update_orientation(chase_position)
+		global_position = lerp(global_position, chase_position - collector_component.position, movement_smoothness)
 	elif is_instance_valid(current_target):
-		global_position = lerp(global_position, current_target.global_position - eater_component.position, movement_smoothness)
+		global_position = lerp(global_position, current_target.global_position - collector_component.position, movement_smoothness)
 		update_orientation(current_target.global_position)
 	else:
 		position = lerp(position, wander_component.target_position, movement_smoothness)
 		update_orientation(wander_component.target_position + global_position)
 
-func update_orientation(_target_position):
+func update_orientation(_target_position: Vector2) -> void:
 	if _target_position.x >= global_position.x:
-		sword_sprite.flip_h = false
-		eater_component.position.x = 15
+		actor_sprite.flip_h = false
+		collector_component.position.x = mouth_marker.position.x
 	else:
-		sword_sprite.flip_h = true
-		eater_component.position.x = -15
+		actor_sprite.flip_h = true
+		collector_component.position.x = -mouth_marker.position.x
 
-func advance_level():
-	food_counter += 1
+func on_interaction_success() -> void:
+	items_collected += 1
 	for i in evolution_thresholds.size():
-		if food_counter == evolution_thresholds[i]:
+		if items_collected == evolution_thresholds[i]:
 			leveled_up.emit(i)
 			return
-
-```
-
-**sword_sprite.gd**
-```gdscript
-extends Sprite2D
-@export var sword_area: Area2D
-@export var images: Array[CompressedTexture2D]
-@export var level_up_audio: AudioStreamPlayer2D
-
-func set_image(_index):
-	texture = images[_index]
-	level_up_audio.play_sound()
-
-func on_evolved(stage_index):
-	set_image(stage_index)
 
 ```
 
@@ -360,35 +393,6 @@ func _ready() -> void:
 func on_timeout():
 	wait_time = randf_range(min_wait, max_wait)
 	target_position = Vector2(randf_range(bounds_min.x, bounds_max.x), randf_range(bounds_min.y, bounds_max.y))
-
-```
-
-**water_button.gd**
-```gdscript
-extends TextureButton
-
-signal water_entered
-signal water_exited
-signal water_pressed(pos)
-
-func _ready() -> void:
-	mouse_entered.connect(on_mouse_entered)
-	mouse_exited.connect(on_mouse_exited)
-	pressed.connect(on_pressed)
-	if texture_normal:
-		var image = texture_normal.get_image()
-		var bitmap = BitMap.new()
-		bitmap.create_from_image_alpha(image)
-		texture_click_mask = bitmap
-
-func on_mouse_entered():
-	water_entered.emit()
-
-func on_mouse_exited():
-	water_exited.emit()
-
-func on_pressed():
-	water_pressed.emit(get_global_mouse_position())
 
 ```
 

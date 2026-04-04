@@ -2,6 +2,7 @@ extends Button
 @export var sound_glass_slide: AudioStreamPlayer2D
 @export var sound_glass_place: AudioStreamPlayer2D
 
+signal resize_requested
 signal hovered(index)
 signal unhovered
 
@@ -12,7 +13,7 @@ func _ready() -> void:
 	mouse_exited.connect(on_mouse_exited)
 
 func on_button_down():
-	get_window().start_resize(DisplayServer.WINDOW_EDGE_BOTTOM_RIGHT)
+	resize_requested.emit()
 	sound_glass_slide.play_sound()
 
 func on_button_up():

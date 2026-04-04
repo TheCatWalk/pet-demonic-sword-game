@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cl4qi6gnogt65"]
+
+[ext_resource type="Script" uid="uid://ddyejknym4g7g" path="res://scripts/desktop_pet_wrapper.gd" id="1_dpwsc"]
+[ext_resource type="PackedScene" uid="uid://c6r16h5bv21o4" path="res://scenes/world.tscn" id="2_world"]
+
+[node name="DesktopPetWrapper" type="Node2D" unique_id=100000001]
+script = ExtResource("1_dpwsc")
+
+[node name="World" parent="." unique_id=100000002 instance=ExtResource("2_world")]
