@@ -4,46 +4,58 @@
 [ext_resource type="Texture2D" uid="uid://cg4ldudcq64pb" path="res://assets/swords/sword_01_centred_cropped.png" id="2_p4x8v"]
 [ext_resource type="Texture2D" uid="uid://b0v7lx1uwgwaq" path="res://assets/swords/sword_03_centred_cropped.png" id="2_s4ec8"]
 [ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/sword_sprite.gd" id="3_s4ec8"]
-[ext_resource type="Script" uid="uid://cy0fauicqjaru" path="res://scripts/sword_area.gd" id="4_k5whp"]
+[ext_resource type="Script" uid="uid://s6f85m5kv6m" path="res://scripts/eater_component.gd" id="4_k5whp"]
 [ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="5_1yp6w"]
 [ext_resource type="Texture2D" uid="uid://dy36mifyc88l3" path="res://assets/swords/sword_04_centred_cropped.png" id="5_3oqan"]
-[ext_resource type="Script" uid="uid://e5n6g7h266gx" path="res://scripts/sound_chomp.gd" id="6_fnw8x"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="6_fnw8x"]
 [ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="6_sjcpw"]
 [ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="7_cp3m4"]
-[ext_resource type="Script" uid="uid://bvol6us60gsyj" path="res://scripts/random_position.gd" id="11_3oqan"]
+[ext_resource type="Script" uid="uid://byf72q5aanvek" path="res://scripts/wander_component.gd" id="11_3oqan"]
 [ext_resource type="AudioStream" uid="uid://cepxjtdlyv5gx" path="res://assets/audio/audio_pop.ogg" id="11_sjcpw"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="12_wobble"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s4ec8"]
 radius = 15.0
 
-[node name="sword" type="CharacterBody2D" unique_id=1045126170]
+[node name="Sword" type="CharacterBody2D" unique_id=1045126170]
 script = ExtResource("1_n355p")
 
-[node name="sword_sprite" type="Sprite2D" parent="." unique_id=1885588746 node_paths=PackedStringArray("sword_area", "sound_pop")]
+[node name="Collision" type="Node2D" parent="." unique_id=337010671]
+
+[node name="EaterComponent" type="Area2D" parent="Collision" unique_id=1040540972 node_paths=PackedStringArray("sound_chomp", "sword_sprite")]
+script = ExtResource("4_k5whp")
+sound_chomp = NodePath("../../Systems/AudioPlayer")
+sword_sprite = NodePath("../../Visuals/SwordSprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision/EaterComponent" unique_id=1734053575]
+shape = SubResource("CircleShape2D_s4ec8")
+
+[node name="Visuals" type="Node2D" parent="." unique_id=1128011115]
+
+[node name="SwordSprite" type="Sprite2D" parent="Visuals" unique_id=1885588746 node_paths=PackedStringArray("level_up_audio")]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_p4x8v")
 script = ExtResource("3_s4ec8")
-sword_area = NodePath("../sword_area")
 images = Array[CompressedTexture2D]([ExtResource("2_s4ec8"), ExtResource("5_3oqan"), ExtResource("6_sjcpw")])
-sound_pop = NodePath("../sound_pop")
+level_up_audio = NodePath("../../Systems/LevelUpAudio")
 
-[node name="sword_area" type="Area2D" parent="." unique_id=1040540972 node_paths=PackedStringArray("sound_chomp", "sword_sprite")]
-script = ExtResource("4_k5whp")
-sound_chomp = NodePath("../sound_chomp")
-sword_sprite = NodePath("../sword_sprite")
+[node name="Wobbler" type="Node" parent="Visuals/SwordSprite" unique_id=1802543979]
+script = ExtResource("12_wobble")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="sword_area" unique_id=1734053575]
-shape = SubResource("CircleShape2D_s4ec8")
+[node name="MouthMarker" type="Marker2D" parent="Visuals" unique_id=11788898]
+position = Vector2(47, 0)
 
-[node name="sound_chomp" type="AudioStreamPlayer2D" parent="." unique_id=667205689]
+[node name="Systems" type="Node2D" parent="." unique_id=1345695038]
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="Systems" unique_id=667205689]
 stream = ExtResource("5_1yp6w")
 script = ExtResource("6_fnw8x")
 sounds = Array[AudioStream]([ExtResource("5_1yp6w"), ExtResource("7_cp3m4")])
 
-[node name="sound_pop" type="AudioStreamPlayer2D" parent="." unique_id=1988410756]
+[node name="LevelUpAudio" type="AudioStreamPlayer2D" parent="Systems" unique_id=1988410756]
 script = ExtResource("6_fnw8x")
 sounds = Array[AudioStream]([ExtResource("11_sjcpw")])
 
-[node name="random_position" type="Timer" parent="." unique_id=1383127507]
+[node name="WanderComponent" type="Timer" parent="Systems" unique_id=1383127507]
 autostart = true
 script = ExtResource("11_3oqan")

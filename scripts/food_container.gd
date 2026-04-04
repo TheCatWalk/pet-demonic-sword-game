@@ -1,10 +1,14 @@
 extends Node2D
-const FOOD = preload("uid://cjwu5caouwots")
 
-func _ready() -> void:
-	GLOBAL.water_clicked.connect(on_water_clicked)
+@export var food_scenes: Array[PackedScene] = []
 
-func on_water_clicked(_global_position):
-	var new_food = FOOD.instantiate()
-	add_child(new_food)
-	new_food.global_position = _global_position
+func spawn_food(_global_position):
+	if food_scenes.is_empty():
+		push_warning("FoodContainer: No food scenes assigned in the Inspector!")
+		return
+
+	var scene_to_spawn = food_scenes.pick_random()
+	if scene_to_spawn:
+		var new_food = scene_to_spawn.instantiate()
+		add_child(new_food)
+		new_food.global_position = _global_position

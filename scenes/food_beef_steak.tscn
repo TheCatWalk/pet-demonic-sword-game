@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://cjwu5caouwots"]
+
+[ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/food.gd" id="1_x4rya"]
+[ext_resource type="Texture2D" uid="uid://4nifjej2syy4" path="res://assets/food/meats/pixel-meats-60/tbone-steak.png" id="2_fp84d"]
+[ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_8x7em"]
+[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_ngdn8"]
+[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="5_50o52"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xven1"]
+radius = 24.020824
+
+[node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+script = ExtResource("1_x4rya")
+
+[node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("2_fp84d")
+
+[node name="Wobbler" type="Node" parent="FoodSprite" unique_id=521162899]
+script = ExtResource("3_8x7em")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833101611]
+position = Vector2(-2, 1)
+shape = SubResource("CircleShape2D_xven1")
+disabled = true
+
+[node name="Timer" type="Timer" parent="." unique_id=1289094684]
+wait_time = 0.1
+one_shot = true
+autostart = true
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1877776765]
+script = ExtResource("4_ngdn8")
+sounds = Array[AudioStream]([ExtResource("5_50o52")])

@@ -6,7 +6,7 @@ func _ready() -> void:
 	body_entered.connect(on_body_entered)
 
 func on_body_entered(body):
-	if body.is_in_group("food"):
-		body.queue_free()
+	if body.has_method("consume"):
+		body.consume()
 		sound_chomp.play_sound()
-		sword_sprite.grow()
+		owner.advance_level()

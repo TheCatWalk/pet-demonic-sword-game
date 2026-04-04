@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__godot-mcp-pro__get_filesystem_tree",
+      "mcp__godot-mcp-pro__get_scene_tree",
+      "mcp__godot-mcp-pro__attach_script",
+      "mcp__godot-mcp-pro__get_scene_file_content"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "godot-mcp-pro"
+  ]
+}

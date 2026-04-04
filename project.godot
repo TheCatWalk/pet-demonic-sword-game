@@ -18,7 +18,6 @@ config/windows_native_icon="res://assets/sword_01.ico"
 
 [autoload]
 
-GLOBAL="*uid://p203wcxico4h"
 MCPScreenshot="*res://addons/godot_mcp/mcp_screenshot_service.gd"
 MCPInputService="*res://addons/godot_mcp/mcp_input_service.gd"
 MCPGameInspector="*res://addons/godot_mcp/mcp_game_inspector_service.gd"

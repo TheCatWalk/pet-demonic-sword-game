@@ -2,6 +2,9 @@ extends Button
 @export var sound_glass_slide: AudioStreamPlayer2D
 @export var sound_glass_place: AudioStreamPlayer2D
 
+signal hovered(index)
+signal unhovered
+
 func _ready() -> void:
 	button_down.connect(on_button_down)
 	button_up.connect(on_button_up)
@@ -16,7 +19,7 @@ func on_button_up():
 	sound_glass_place.play_sound()
 
 func on_mouse_entered():
-	GLOBAL.show_tooltip.emit(0)
+	hovered.emit(0)
 
 func on_mouse_exited():
-	GLOBAL.hide_tooltip.emit()
+	unhovered.emit()

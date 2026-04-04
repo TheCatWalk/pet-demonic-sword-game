@@ -1,5 +1,9 @@
 extends Button
 var muted = false
+
+signal hovered(index)
+signal unhovered
+
 func _ready() -> void:
 	toggled.connect(on_toggled)
 	mouse_entered.connect(on_mouse_entered)
@@ -15,9 +19,9 @@ func mute():
 
 func on_mouse_entered():
 	if muted:
-		GLOBAL.show_tooltip.emit(2)
+		hovered.emit(2)
 	else:
-		GLOBAL.show_tooltip.emit(3)
+		hovered.emit(3)
 
 func on_mouse_exited():
-	GLOBAL.hide_tooltip.emit()
+	unhovered.emit()
