@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+	"godot-mcp-pro": {
+	  "command": "node",
+	  "args": ["E:/Godot/mcp-setup/godot-mcp-pro-v1.5.3/server/build/index.js"],
+	  "env": {
+		"GODOT_MCP_PORT": "6505"
+	  }
+	}
+  }
+}
