@@ -20,10 +20,10 @@ func _ready() -> void:
 
 func on_button_down():
 	drag_requested.emit()
-	sound_glass_slide.play_sound()
+	sound_glass_slide.play()
 
 func on_button_up():
-	sound_glass_place.play_sound()
+	sound_glass_place.play()
 
 func on_mouse_entered():
 	hovered.emit(1)

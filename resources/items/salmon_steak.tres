@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://5332suy1072o"]
+
+[ext_resource type="PackedScene" uid="uid://dugy6krxqgh8k" path="res://scenes/collectables/collectable_salmon_steak.tscn" id="1_nqoyy"]
+[ext_resource type="Script" uid="uid://cb71n8qji03sx" path="res://scripts/resources/item_data.gd" id="1_tjd81"]
+[ext_resource type="AudioStream" uid="uid://cvck51xgdids6" path="res://resources/sounds/sfx_random_drop.tres" id="3_ec1w6"]
+
+[resource]
+script = ExtResource("1_tjd81")
+name = "Salmon Steak"
+scene = ExtResource("1_nqoyy")
+sfx = ExtResource("3_ec1w6")
+metadata/_custom_type_script = "uid://cb71n8qji03sx"

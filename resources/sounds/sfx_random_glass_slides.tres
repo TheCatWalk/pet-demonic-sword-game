@@ -1,0 +1,13 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://vnmoa7pt3yys"]
+
+[ext_resource type="AudioStream" uid="uid://djny1svd04vsr" path="res://assets/audio/audio_glass_slide_1.ogg" id="1_pln4t"]
+[ext_resource type="AudioStream" uid="uid://b01af5f1cmkqa" path="res://assets/audio/audio_glass_slide_2.ogg" id="2_yy4t0"]
+[ext_resource type="AudioStream" uid="uid://cf0oi3qnu7o66" path="res://assets/audio/audio_glass_slide_3.ogg" id="3_qwp4c"]
+[ext_resource type="AudioStream" uid="uid://bgcjkr5yh2jqi" path="res://assets/audio/audio_glass_slide_4.ogg" id="4_gfnl0"]
+
+[resource]
+streams_count = 4
+stream_0/stream = ExtResource("1_pln4t")
+stream_1/stream = ExtResource("2_yy4t0")
+stream_2/stream = ExtResource("3_qwp4c")
+stream_3/stream = ExtResource("4_gfnl0")

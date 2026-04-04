@@ -165,6 +165,20 @@ sounds = Array[AudioStream]([ExtResource("5_7qgem")])
 
 ### scenes
 
+**desktop_pet_wrapper.tscn**
+```ini
+[gd_scene format=3 uid="uid://cl4qi6gnogt65"]
+
+[ext_resource type="Script" uid="uid://ddyejknym4g7g" path="res://scripts/desktop_pet_wrapper.gd" id="1_dpwsc"]
+[ext_resource type="PackedScene" uid="uid://c6r16h5bv21o4" path="res://scenes/world.tscn" id="2_world"]
+
+[node name="DesktopPetWrapper" type="Node2D" unique_id=100000001]
+script = ExtResource("1_dpwsc")
+
+[node name="World" parent="." unique_id=100000002 instance=ExtResource("2_world")]
+
+```
+
 **environment.tscn**
 ```ini
 [gd_scene format=3 uid="uid://c30gtcxp6tgj5"]
@@ -182,11 +196,8 @@ sounds = Array[AudioStream]([ExtResource("5_7qgem")])
 [ext_resource type="Texture2D" uid="uid://d1luao0hcrtp7" path="res://assets/decorations-red/FancyMansion_Furniture/fancy_mansion_furnitureset_withshadow.png" id="6_lp3pk"]
 [ext_resource type="Script" uid="uid://cy0t40hunjluv" path="res://scripts/env_drag_button.gd" id="7_a8hem"]
 [ext_resource type="Texture2D" uid="uid://bk7hha3jxowvy" path="res://assets/fishbowl/bowl-button-mask.png" id="7_piyae"]
-[ext_resource type="PackedScene" uid="uid://cjwu5caouwots" path="res://scenes/collectables/collectable_beef_steak.tscn" id="8_x2463"]
 [ext_resource type="Script" uid="uid://borgoayefar43" path="res://scripts/resize_button.gd" id="9_1xn47"]
-[ext_resource type="PackedScene" uid="uid://cf4ojjraxkolw" path="res://scenes/collectables/collectable_roast_chicken.tscn" id="9_epjyj"]
 [ext_resource type="PackedScene" uid="uid://ck3ms4ncapggs" path="res://scenes/ambient_particle.tscn" id="10_6mvqw"]
-[ext_resource type="PackedScene" uid="uid://dugy6krxqgh8k" path="res://scenes/collectables/collectable_salmon_steak.tscn" id="10_cd3j1"]
 [ext_resource type="Script" uid="uid://dca63p2n6h2t0" path="res://scripts/tooltip.gd" id="10_qv3t7"]
 [ext_resource type="Texture2D" uid="uid://myoooe623v35" path="res://assets/bubble/Bubble/24_Pixels006.png" id="11_fdxaj"]
 [ext_resource type="Texture2D" uid="uid://cv4v4yv0exu4j" path="res://assets/ui/IconGodotNode/node_3D/icon_area_meteo.png" id="11_s4kht"]
@@ -483,7 +494,6 @@ region_rect = Rect2(1, 180, 63, 46)
 [node name="ItemSpawner" type="Node2D" parent="Gameplay" unique_id=1459091898]
 position = Vector2(-537, -552)
 script = ExtResource("2_160m0")
-spawnable_items = Array[PackedScene]([ExtResource("8_x2463"), ExtResource("9_epjyj"), ExtResource("10_cd3j1")])
 
 [node name="MainActor" parent="Gameplay" unique_id=1045126170 instance=ExtResource("2_sm2eq")]
 position = Vector2(0, -1)
@@ -584,9 +594,6 @@ sounds = Array[AudioStream]([ExtResource("31_wcoob"), ExtResource("32_h4txo"), E
 [ext_resource type="Script" uid="uid://s6f85m5kv6m" path="res://scripts/collector_component.gd" id="2_bkxya"]
 [ext_resource type="Texture2D" uid="uid://cg4ldudcq64pb" path="res://assets/swords/sword_01_centred_cropped.png" id="3_2ffig"]
 [ext_resource type="Script" uid="uid://btwtrwmiyfkgw" path="res://scripts/actor_sprite.gd" id="4_ae0te"]
-[ext_resource type="Texture2D" uid="uid://b0v7lx1uwgwaq" path="res://assets/swords/sword_03_centred_cropped.png" id="5_3xjdu"]
-[ext_resource type="Texture2D" uid="uid://dy36mifyc88l3" path="res://assets/swords/sword_04_centred_cropped.png" id="6_qmrim"]
-[ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="7_2vo8j"]
 [ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="8_kks63"]
 [ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="9_omtpl"]
 [ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="10_m4itm"]
@@ -617,7 +624,6 @@ shape = SubResource("CircleShape2D_s4ec8")
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_2ffig")
 script = ExtResource("4_ae0te")
-images = Array[CompressedTexture2D]([ExtResource("5_3xjdu"), ExtResource("6_qmrim"), ExtResource("7_2vo8j")])
 level_up_audio = NodePath("../../Systems/LevelUpAudio")
 
 [node name="Wobbler" type="Node" parent="Visuals/ActorSprite" unique_id=1802543979]

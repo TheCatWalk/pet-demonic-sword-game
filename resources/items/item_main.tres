@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemRegistry" format=3 uid="uid://dknb5dp8cvmin"]
+
+[ext_resource type="Script" uid="uid://cb71n8qji03sx" path="res://scripts/resources/item_data.gd" id="1_tb5nu"]
+[ext_resource type="Resource" uid="uid://b1eghrl34gx7u" path="res://resources/items/beef_steak.tres" id="2_jksfj"]
+[ext_resource type="Script" uid="uid://bey8ymns10158" path="res://scripts/resources/item_registry.gd" id="2_s25la"]
+[ext_resource type="Resource" uid="uid://bl1o06ugda0pb" path="res://resources/items/roast_chicken.tres" id="3_jh8fk"]
+[ext_resource type="Resource" uid="uid://5332suy1072o" path="res://resources/items/salmon_steak.tres" id="4_2upcy"]
+
+[resource]
+script = ExtResource("2_s25la")
+items = Array[ExtResource("1_tb5nu")]([ExtResource("2_jksfj"), ExtResource("3_jh8fk"), ExtResource("4_2upcy")])
+metadata/_custom_type_script = "uid://bey8ymns10158"

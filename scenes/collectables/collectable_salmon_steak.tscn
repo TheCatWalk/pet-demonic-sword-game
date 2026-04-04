@@ -3,33 +3,27 @@
 [ext_resource type="Script" uid="uid://k5q42ea8a2xh" path="res://scripts/collectable_item.gd" id="1_fj8r0"]
 [ext_resource type="Texture2D" uid="uid://cw8ku4vhl7vd2" path="res://assets/food/meats/pixel-meats-60/salmon-steak.png" id="2_fj8r0"]
 [ext_resource type="Script" uid="uid://dy4aey2gdhxb6" path="res://scripts/wobble_visual.gd" id="3_njvfd"]
-[ext_resource type="Script" uid="uid://ccrtkk3dr3cbj" path="res://scripts/random_audio_player.gd" id="4_1ul2v"]
-[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="5_7qgem"]
+[ext_resource type="AudioStream" uid="uid://cvck51xgdids6" path="res://resources/sounds/sfx_random_drop.tres" id="4_s3f85"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xven1"]
 radius = 24.020824
 
-[node name="FoodScene" type="CharacterBody2D" unique_id=188966436]
+[node name="CollectableScene" type="CharacterBody2D" unique_id=188966436]
 collision_layer = 2
 script = ExtResource("1_fj8r0")
 
-[node name="FoodSprite" type="Sprite2D" parent="." unique_id=43782751]
+[node name="CollectableSprite" type="Sprite2D" parent="." unique_id=43782751]
 scale = Vector2(0.75, 0.75)
 texture = ExtResource("2_fj8r0")
 
-[node name="Wobbler" type="Node" parent="FoodSprite" unique_id=521162899]
+[node name="Wobbler" type="Node" parent="CollectableSprite" unique_id=521162899 node_paths=PackedStringArray("target_node")]
 script = ExtResource("3_njvfd")
+target_node = NodePath("..")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=833101611]
 position = Vector2(-2, 1)
 shape = SubResource("CircleShape2D_xven1")
 disabled = true
 
-[node name="Timer" type="Timer" parent="." unique_id=1289094684]
-wait_time = 0.1
-one_shot = true
-autostart = true
-
 [node name="AudioPlayer" type="AudioStreamPlayer2D" parent="." unique_id=1877776765]
-script = ExtResource("4_1ul2v")
-sounds = Array[AudioStream]([ExtResource("5_7qgem")])
+stream = ExtResource("4_s3f85")

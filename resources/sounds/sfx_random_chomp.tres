@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://bqfxgwjcl00ow"]
+
+[ext_resource type="AudioStream" uid="uid://08i4ru2fnvj6" path="res://assets/audio/audio_chomp_1.ogg" id="1_ueyvu"]
+[ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="2_na0be"]
+
+[resource]
+streams_count = 2
+stream_0/stream = ExtResource("1_ueyvu")
+stream_1/stream = ExtResource("2_na0be")

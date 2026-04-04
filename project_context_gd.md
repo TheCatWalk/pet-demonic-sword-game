@@ -8,25 +8,23 @@
 ```gdscript
 extends Sprite2D
 
-@export var images: Array[CompressedTexture2D]
 @export var level_up_audio: AudioStreamPlayer2D
-
 @onready var mouth_marker: Marker2D = $"../MouthMarker"
 
-func set_image(_index: int) -> void:
-	if _index < images.size():
-		texture = images[_index]
+var _base_scale: Vector2
 
-		var half_width = (texture.get_width() * scale.x) / 2.0
+func _ready() -> void:
+	_base_scale = scale
 
-		if mouth_marker:
-			mouth_marker.position.x = half_width
-
-	if level_up_audio:
-		level_up_audio.play_sound()
-
-func on_evolved(stage_index: int) -> void:
-	set_image(stage_index)
+func apply_evolution_visuals(new_texture: Texture2D, scale_mult: float, sfx: AudioStream) -> void:
+	texture = new_texture
+	scale = _base_scale * scale_mult
+	var half_width = (texture.get_width() * scale.x) / 2.0
+	if mouth_marker:
+		mouth_marker.position.x = half_width
+	if level_up_audio and sfx:
+		level_up_audio.stream = sfx
+		level_up_audio.play()
 
 ```
 
@@ -47,25 +45,30 @@ func _ready() -> void:
 
 func on_timeout():
 	timer.wait_time = randf_range(7, 30)
-	audio_player.play_sound()
+	audio_player.play()
 
 ```
 
 **collectable_item.gd**
 ```gdscript
 extends CharacterBody2D
+
 @onready var timer: Timer = $Timer
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var sound_drop: AudioStreamPlayer2D = $AudioPlayer
 
 func _ready() -> void:
 	timer.timeout.connect(enable_collision)
-	sound_drop.play_sound()
 
-func enable_collision():
+func setup(drop_sound: AudioStream) -> void:
+	if sound_drop and drop_sound:
+		sound_drop.stream = drop_sound
+		sound_drop.play()
+
+func enable_collision() -> void:
 	collision_shape_2d.disabled = false
 
-func consume():
+func consume() -> void:
 	queue_free()
 
 ```
@@ -75,14 +78,37 @@ func consume():
 extends Area2D
 @export var sound_interaction: AudioStreamPlayer2D
 
+signal item_collected
+
 func _ready() -> void:
 	body_entered.connect(on_body_entered)
 
-func on_body_entered(body):
+func on_body_entered(body) -> void:
 	if body.has_method("consume"):
 		body.consume()
-		sound_interaction.play_sound()
-		owner.on_interaction_success()
+		if sound_interaction:
+			sound_interaction.play()
+		item_collected.emit()
+
+```
+
+**desktop_pet_wrapper.gd**
+```gdscript
+extends Node2D
+
+func _ready() -> void:
+	get_window().min_size = Vector2i(150, 150)
+	$World.drag_requested.connect(_on_drag_requested)
+	$World.resize_requested.connect(_on_resize_requested)
+
+func _physics_process(_delta: float) -> void:
+	get_window().size.x = get_window().size.y
+
+func _on_drag_requested() -> void:
+	get_window().start_drag()
+
+func _on_resize_requested() -> void:
+	get_window().start_resize(DisplayServer.WINDOW_EDGE_BOTTOM_RIGHT)
 
 ```
 
@@ -92,6 +118,7 @@ extends TextureButton
 @export var sound_glass_slide: AudioStreamPlayer2D
 @export var sound_glass_place: AudioStreamPlayer2D
 
+signal drag_requested
 signal hovered(index)
 signal unhovered
 
@@ -108,11 +135,11 @@ func _ready() -> void:
 		texture_click_mask = bitmap
 
 func on_button_down():
-	get_window().start_drag()
-	sound_glass_slide.play_sound()
+	drag_requested.emit()
+	sound_glass_slide.play()
 
 func on_button_up():
-	sound_glass_place.play_sound()
+	sound_glass_place.play()
 
 func on_mouse_entered():
 	hovered.emit(1)
@@ -126,6 +153,9 @@ func on_mouse_exited():
 ```gdscript
 extends Node2D
 
+signal drag_requested
+signal resize_requested
+
 @onready var input_area_button = $"InputLayers/InputAreaButton"
 @onready var item_spawner = $"Gameplay/ItemSpawner"
 @onready var tooltip = $"Interface/Tooltip"
@@ -138,9 +168,11 @@ func _ready() -> void:
 	input_area_button.zone_exited.connect(_on_zone_exited)
 	input_area_button.zone_pressed.connect(_on_zone_pressed)
 
+	resize_button.resize_requested.connect(resize_requested.emit)
 	resize_button.hovered.connect(_on_button_hovered)
 	resize_button.unhovered.connect(_on_button_unhovered)
 
+	env_drag_button.drag_requested.connect(drag_requested.emit)
 	env_drag_button.hovered.connect(_on_button_hovered)
 	env_drag_button.unhovered.connect(_on_button_unhovered)
 
@@ -218,18 +250,26 @@ func on_pressed():
 ```gdscript
 extends Node2D
 
-@export var spawnable_items: Array[PackedScene] = []
+@export var registry: ItemRegistry
 
-func spawn_item(_global_position):
-	if spawnable_items.is_empty():
-		push_warning("Spawner: No spawnable items assigned in the Inspector!")
+func spawn_item(_global_position: Vector2) -> void:
+	if registry == null or registry.items.is_empty():
+		push_warning("Spawner: No ItemRegistry assigned or registry is empty!")
 		return
 
-	var scene_to_spawn = spawnable_items.pick_random()
-	if scene_to_spawn:
-		var new_item = scene_to_spawn.instantiate()
-		add_child(new_item)
-		new_item.global_position = _global_position
+	var item_data: ItemData = registry.items.pick_random()
+
+	if item_data == null or item_data.scene == null:
+		push_warning("Spawner: ItemData or its scene is null!")
+		return
+
+	var new_item = item_data.scene.instantiate()
+
+	if new_item.has_method("setup"):
+		new_item.setup(item_data.sfx)
+
+	add_child(new_item)
+	new_item.global_position = _global_position
 
 ```
 
@@ -265,26 +305,13 @@ func on_mouse_exited():
 
 ```
 
-**random_audio_player.gd**
-```gdscript
-extends AudioStreamPlayer2D
-
-@export var sounds: Array[AudioStream]
-
-func play_sound():
-	sounds.shuffle()
-	stream = sounds[0]
-	pitch_scale = randf_range(1.0, 1.3)
-	play()
-
-```
-
 **resize_button.gd**
 ```gdscript
 extends Button
 @export var sound_glass_slide: AudioStreamPlayer2D
 @export var sound_glass_place: AudioStreamPlayer2D
 
+signal resize_requested
 signal hovered(index)
 signal unhovered
 
@@ -295,11 +322,11 @@ func _ready() -> void:
 	mouse_exited.connect(on_mouse_exited)
 
 func on_button_down():
-	get_window().start_resize(DisplayServer.WINDOW_EDGE_BOTTOM_RIGHT)
-	sound_glass_slide.play_sound()
+	resize_requested.emit()
+	sound_glass_slide.play()
 
 func on_button_up():
-	sound_glass_place.play_sound()
+	sound_glass_place.play()
 
 func on_mouse_entered():
 	hovered.emit(0)
@@ -308,6 +335,61 @@ func on_mouse_exited():
 	unhovered.emit()
 
 ```
+
+#### resources
+
+**actor_manifest.gd**
+```gdscript
+class_name ActorManifest
+extends Resource
+
+@export var stages: Array[EvolutionData] = []
+
+```
+
+**evolution_data.gd**
+```gdscript
+class_name EvolutionData
+extends Resource
+
+@export var sprite: Texture2D
+@export var scale_multiplier: float = 1.0
+@export var threshold_value: int = 10
+@export var evolution_sfx: AudioStream
+
+```
+
+**item_data.gd**
+```gdscript
+class_name ItemData
+extends Resource
+
+@export var name: String = ""
+@export var scene: PackedScene
+@export var value: int = 1
+@export var sfx: AudioStream
+
+```
+
+**item_registry.gd**
+```gdscript
+class_name ItemRegistry
+extends Resource
+
+@export var items: Array[ItemData] = []
+
+```
+
+**sound_bank.gd**
+```gdscript
+class_name SoundBank
+extends Resource
+
+@export var sounds: Array[AudioStream] = []
+
+```
+
+### scripts
 
 **simulation_actor.gd**
 ```gdscript
@@ -322,15 +404,16 @@ var is_input_active: bool = false
 var chase_position: Vector2 = Vector2.ZERO
 var items_collected: int = 0
 var current_target: Node2D = null
+var current_stage_index: int = -1
 
 @export var movement_smoothness: float = 0.02
-@export var evolution_thresholds: Array[int] = [10, 20, 30]
+@export var manifest: ActorManifest
 
-signal leveled_up(stage_index)
+signal visuals_updated(new_texture: Texture2D, scale_mult: float, sfx: AudioStream)
 
 func _ready() -> void:
-	leveled_up.connect(actor_sprite.on_evolved)
-
+	visuals_updated.connect(actor_sprite.apply_evolution_visuals)
+	collector_component.item_collected.connect(on_interaction_success)
 func _physics_process(_delta: float) -> void:
 	if is_input_active:
 		update_orientation(chase_position)
@@ -352,10 +435,17 @@ func update_orientation(_target_position: Vector2) -> void:
 
 func on_interaction_success() -> void:
 	items_collected += 1
-	for i in evolution_thresholds.size():
-		if items_collected == evolution_thresholds[i]:
-			leveled_up.emit(i)
-			return
+
+	if manifest == null:
+		push_warning("SimulationActor: No ActorManifest assigned!")
+		return
+
+	var next_stage_index = current_stage_index + 1
+	if next_stage_index < manifest.stages.size():
+		var next_stage = manifest.stages[next_stage_index]
+		if items_collected >= next_stage.threshold_value:
+			current_stage_index = next_stage_index
+			visuals_updated.emit(next_stage.sprite, next_stage.scale_multiplier, next_stage.evolution_sfx)
 
 ```
 
@@ -423,12 +513,13 @@ func _ready() -> void:
 ```gdscript
 extends Node2D
 
+signal drag_requested
+signal resize_requested
 
 func _ready() -> void:
-	get_window().min_size = Vector2i(150,150)
-
-func _physics_process(delta: float) -> void:
-	get_window().size.x = get_window().size.y
+	var env = $Environment
+	env.drag_requested.connect(drag_requested.emit)
+	env.resize_requested.connect(resize_requested.emit)
 
 ```
 

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="EvolutionData" format=3 uid="uid://bbcc61fqpvn4h"]
+
+[ext_resource type="Script" uid="uid://bl8d77qy3birq" path="res://scripts/resources/evolution_data.gd" id="1_plcyw"]
+[ext_resource type="AudioStream" uid="uid://cepxjtdlyv5gx" path="res://assets/audio/audio_pop.ogg" id="1_qp07m"]
+[ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="3_i1ufr"]
+
+[resource]
+script = ExtResource("1_plcyw")
+sprite = ExtResource("3_i1ufr")
+threshold_value = 30
+evolution_sfx = ExtResource("1_qp07m")
+metadata/_custom_type_script = "uid://bl8d77qy3birq"

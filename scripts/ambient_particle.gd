@@ -13,4 +13,4 @@ func _ready() -> void:
 
 func on_timeout():
 	timer.wait_time = randf_range(7, 30)
-	audio_player.play_sound()
+	audio_player.play()

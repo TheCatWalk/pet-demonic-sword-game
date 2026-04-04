@@ -1,0 +1,7 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://cvck51xgdids6"]
+
+[ext_resource type="AudioStream" uid="uid://cq4d7ypplsn8o" path="res://assets/audio/audio_bubble.ogg" id="1_cclmh"]
+
+[resource]
+streams_count = 1
+stream_0/stream = ExtResource("1_cclmh")

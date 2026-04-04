@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ActorManifest" format=3 uid="uid://8p87noiva3pb"]
+
+[ext_resource type="Script" uid="uid://cgxrtg0jf5kwn" path="res://scripts/resources/actor_manifest.gd" id="1_mxtk6"]
+[ext_resource type="Script" uid="uid://bl8d77qy3birq" path="res://scripts/resources/evolution_data.gd" id="2_6s8h8"]
+[ext_resource type="Resource" uid="uid://rcbno6w2711" path="res://resources/actors/stage_1.tres" id="3_jxkru"]
+[ext_resource type="Resource" uid="uid://bsocygr3854ri" path="res://resources/actors/stage_2.tres" id="4_oulm5"]
+[ext_resource type="Resource" uid="uid://bbcc61fqpvn4h" path="res://resources/actors/stage_3.tres" id="5_dh1qq"]
+
+[resource]
+script = ExtResource("1_mxtk6")
+stages = Array[ExtResource("2_6s8h8")]([ExtResource("3_jxkru"), ExtResource("4_oulm5"), ExtResource("5_dh1qq")])
+metadata/_custom_type_script = "uid://cgxrtg0jf5kwn"

@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://bcapusot2vkld"]
+
+[ext_resource type="AudioStream" uid="uid://baumfylghpkl0" path="res://assets/audio/audio_bubbles_1.ogg" id="1_gdjso"]
+[ext_resource type="AudioStream" uid="uid://fty5wfqfpvh7" path="res://assets/audio/audio_bubbles_2.ogg" id="2_587ku"]
+[ext_resource type="AudioStream" uid="uid://csivu2kljif7" path="res://assets/audio/audio_bubbles_3.ogg" id="3_j2qe1"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_gdjso")
+stream_1/stream = ExtResource("2_587ku")
+stream_2/stream = ExtResource("3_j2qe1")

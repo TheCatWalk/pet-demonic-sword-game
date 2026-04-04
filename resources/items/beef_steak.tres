@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://b1eghrl34gx7u"]
+
+[ext_resource type="Script" uid="uid://cb71n8qji03sx" path="res://scripts/resources/item_data.gd" id="1_gj0q3"]
+[ext_resource type="PackedScene" uid="uid://cjwu5caouwots" path="res://scenes/collectables/collectable_beef_steak.tscn" id="1_vxh4i"]
+[ext_resource type="AudioStream" uid="uid://cvck51xgdids6" path="res://resources/sounds/sfx_random_drop.tres" id="3_fxas1"]
+
+[resource]
+script = ExtResource("1_gj0q3")
+name = "Beef Steak"
+scene = ExtResource("1_vxh4i")
+sfx = ExtResource("3_fxas1")
+metadata/_custom_type_script = "uid://cb71n8qji03sx"

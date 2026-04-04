@@ -9,15 +9,16 @@ var is_input_active: bool = false
 var chase_position: Vector2 = Vector2.ZERO
 var items_collected: int = 0
 var current_target: Node2D = null
+var current_stage_index: int = -1
 
 @export var movement_smoothness: float = 0.02
-@export var evolution_thresholds: Array[int] = [10, 20, 30]
+@export var manifest: ActorManifest
 
-signal leveled_up(stage_index)
+signal visuals_updated(new_texture: Texture2D, scale_mult: float, sfx: AudioStream)
 
 func _ready() -> void:
-	leveled_up.connect(actor_sprite.on_evolved)
-
+	visuals_updated.connect(actor_sprite.apply_evolution_visuals)
+	collector_component.item_collected.connect(on_interaction_success)
 func _physics_process(_delta: float) -> void:
 	if is_input_active:
 		update_orientation(chase_position)
@@ -39,7 +40,14 @@ func update_orientation(_target_position: Vector2) -> void:
 
 func on_interaction_success() -> void:
 	items_collected += 1
-	for i in evolution_thresholds.size():
-		if items_collected == evolution_thresholds[i]:
-			leveled_up.emit(i)
-			return
+
+	if manifest == null:
+		push_warning("SimulationActor: No ActorManifest assigned!")
+		return
+
+	var next_stage_index = current_stage_index + 1
+	if next_stage_index < manifest.stages.size():
+		var next_stage = manifest.stages[next_stage_index]
+		if items_collected >= next_stage.threshold_value:
+			current_stage_index = next_stage_index
+			visuals_updated.emit(next_stage.sprite, next_stage.scale_multiplier, next_stage.evolution_sfx)
