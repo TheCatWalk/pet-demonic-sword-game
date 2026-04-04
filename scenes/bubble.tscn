@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://ck3ms4ncapggs"]
+
+[ext_resource type="Texture2D" uid="uid://dgx3s17dnqoe4" path="res://assets/bubble/Bubble/bubble.png" id="1_2vdav"]
+[ext_resource type="Script" uid="uid://dkgks0gcs4lnb" path="res://scripts/bubble.gd" id="2_pm753"]
+[ext_resource type="Script" uid="uid://e5n6g7h266gx" path="res://scripts/sound_chomp.gd" id="3_b4vvx"]
+[ext_resource type="AudioStream" uid="uid://baumfylghpkl0" path="res://assets/audio/audio_bubbles_1.ogg" id="4_ax11v"]
+[ext_resource type="AudioStream" uid="uid://fty5wfqfpvh7" path="res://assets/audio/audio_bubbles_2.ogg" id="5_8ycye"]
+[ext_resource type="AudioStream" uid="uid://csivu2kljif7" path="res://assets/audio/audio_bubbles_3.ogg" id="6_6jlkr"]
+
+[node name="bubble" type="CPUParticles2D" unique_id=864270088]
+texture = ExtResource("1_2vdav")
+lifetime = 2.0
+explosiveness = 0.56
+randomness = 0.4
+lifetime_randomness = 0.31
+direction = Vector2(0, -1)
+spread = 30.79
+gravity = Vector2(0, 0)
+initial_velocity_min = 20.0
+initial_velocity_max = 100.0
+damping_min = 5.921
+damping_max = 26.974
+scale_amount_min = 0.25
+scale_amount_max = 2.0
+script = ExtResource("2_pm753")
+
+[node name="sound_bubble" type="AudioStreamPlayer2D" parent="." unique_id=8164126]
+volume_db = -25.839
+script = ExtResource("3_b4vvx")
+sounds = Array[AudioStream]([ExtResource("4_ax11v"), ExtResource("5_8ycye"), ExtResource("6_6jlkr")])
+
+[node name="Timer" type="Timer" parent="." unique_id=679108074]

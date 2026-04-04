@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://e5n6g7h266gx" path="res://scripts/sound_chomp.gd" id="6_fnw8x"]
 [ext_resource type="Texture2D" uid="uid://duk8ljn3v440r" path="res://assets/swords/sword_05_centred_cropped.png" id="6_sjcpw"]
 [ext_resource type="AudioStream" uid="uid://1djte44kydnl" path="res://assets/audio/audio_chomp_2.ogg" id="7_cp3m4"]
+[ext_resource type="Script" uid="uid://bvol6us60gsyj" path="res://scripts/random_position.gd" id="11_3oqan"]
+[ext_resource type="AudioStream" uid="uid://cepxjtdlyv5gx" path="res://assets/audio/audio_pop.ogg" id="11_sjcpw"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_s4ec8"]
 radius = 15.0
@@ -17,11 +19,13 @@ radius = 15.0
 [node name="sword" type="CharacterBody2D" unique_id=1045126170]
 script = ExtResource("1_n355p")
 
-[node name="sword_sprite" type="Sprite2D" parent="." unique_id=1885588746]
+[node name="sword_sprite" type="Sprite2D" parent="." unique_id=1885588746 node_paths=PackedStringArray("sword_area", "sound_pop")]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_p4x8v")
 script = ExtResource("3_s4ec8")
-images = Array[CompressedTexture2D]([ExtResource("2_p4x8v"), ExtResource("2_s4ec8"), ExtResource("5_3oqan"), ExtResource("6_sjcpw")])
+sword_area = NodePath("../sword_area")
+images = Array[CompressedTexture2D]([ExtResource("2_s4ec8"), ExtResource("5_3oqan"), ExtResource("6_sjcpw")])
+sound_pop = NodePath("../sound_pop")
 
 [node name="sword_area" type="Area2D" parent="." unique_id=1040540972 node_paths=PackedStringArray("sound_chomp", "sword_sprite")]
 script = ExtResource("4_k5whp")
@@ -35,3 +39,11 @@ shape = SubResource("CircleShape2D_s4ec8")
 stream = ExtResource("5_1yp6w")
 script = ExtResource("6_fnw8x")
 sounds = Array[AudioStream]([ExtResource("5_1yp6w"), ExtResource("7_cp3m4")])
+
+[node name="sound_pop" type="AudioStreamPlayer2D" parent="." unique_id=1988410756]
+script = ExtResource("6_fnw8x")
+sounds = Array[AudioStream]([ExtResource("11_sjcpw")])
+
+[node name="random_position" type="Timer" parent="." unique_id=1383127507]
+autostart = true
+script = ExtResource("11_3oqan")

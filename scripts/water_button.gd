@@ -17,7 +17,10 @@ func _ready() -> void:
 
 func on_mouse_entered():
 	GLOBAL.mouse_in_water = true
+	GLOBAL.show_tooltip.emit(4)
+
 func on_mouse_exited():
 	GLOBAL.mouse_in_water = false
+	GLOBAL.hide_tooltip.emit()
 func on_pressed():
 	GLOBAL.water_clicked.emit(get_global_mouse_position())

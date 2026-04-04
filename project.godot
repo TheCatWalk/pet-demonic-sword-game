@@ -13,7 +13,8 @@ config_version=5
 config/name="Feed The Sword"
 run/main_scene="uid://c6r16h5bv21o4"
 config/features=PackedStringArray("4.6", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="uid://dwgy7blrhpt5i"
+config/windows_native_icon="res://assets/sword_01.ico"
 
 [autoload]
 
@@ -23,10 +24,15 @@ GLOBAL="*uid://p203wcxico4h"
 
 window/size/viewport_width=1080
 window/size/viewport_height=1080
+window/size/borderless=true
 window/size/transparent=true
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/per_pixel_transparency/allowed=true
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/flatten_for_llm/plugin.cfg")
 
 [physics]
 
